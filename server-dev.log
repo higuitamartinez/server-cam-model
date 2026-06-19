@@ -1,0 +1,6 @@
+
+> document-scanner-server@1.0.0 dev
+> tsx watch src/index.ts
+
+Document scanner server listo en https://192.168.1.30:3001/scanner
+Escuchando en 0.0.0.0:3001

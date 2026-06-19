@@ -1,0 +1,12 @@
+
+> document-scanner-server@1.0.0 dev
+> tsx watch src/index.ts
+
+Document scanner server listo en https://192.168.1.30:3001/scanner
+Escuchando en 0.0.0.0:3001
+2:13:56 p.m. [tsx] change in ./src\index.ts Restarting...
+cDocument scanner server listo en https://192.168.1.30:3001/scanner
+Escuchando en 0.0.0.0:3001
+3:45:31 p.m. [tsx] change in ./src\index.ts Restarting...
+cDocument scanner server listo en https://192.168.1.30:3001/scanner
+Escuchando en 0.0.0.0:3001

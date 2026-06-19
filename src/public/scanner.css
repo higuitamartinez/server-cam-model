@@ -1,0 +1,361 @@
+:root {
+  --black: #050505;
+  --white: #ffffff;
+  --gray: #a9adb3;
+  --error: #e74c3c;
+  --green-primary: #4d8509;
+  --green-second: #61a60e;
+  --overlay: rgba(0, 0, 0, 0.8);
+  --surface: rgba(255, 255, 255, 0.08);
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font);
+}
+
+button {
+  font: inherit;
+}
+
+.scanner-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  background: var(--black);
+}
+
+.message-screen,
+.camera-screen,
+.captured-screen {
+  width: 100%;
+  min-height: 100%;
+}
+
+.message-screen,
+.captured-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.message-screen {
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  color: var(--gray);
+  font-size: 1.1rem;
+}
+
+.error-screen {
+  color: var(--error);
+}
+
+.camera-screen {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.scanner-header,
+.scanner-footer {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.scanner-header {
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
+}
+
+.scanner-footer {
+  padding: 1.25rem 1rem 1.5rem;
+}
+
+.scanner-header h1,
+.scanner-footer h2 {
+  margin: 0;
+  color: var(--white);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.scanner-header h1 {
+  font-size: clamp(1.35rem, 2vw, 2rem);
+}
+
+.scanner-footer h2 {
+  text-align: center;
+  font-size: clamp(1.15rem, 2vw, 2rem);
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 0;
+  border-radius: 8px;
+  color: var(--white);
+  background: transparent;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.icon-button:hover {
+  opacity: 0.75;
+}
+
+.icon-button span {
+  display: block;
+  font-size: 3rem;
+  line-height: 1;
+  transform: translateY(-2px);
+}
+
+.camera-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+.camera-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.guide-overlay,
+.debug-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.debug-overlay {
+  display: none;
+}
+
+body[data-debug="true"] .debug-overlay {
+  display: block;
+}
+
+.progress-container {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: min(80%, 400px);
+  transform: translateX(-50%);
+  border-radius: 30px;
+  padding: 8px;
+}
+
+.progress-container p {
+  margin: 0 0 8px;
+  color: var(--white);
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.progress-track {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: 30px;
+  background: var(--white);
+  transition: width 0.1s linear;
+}
+
+.captured-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 520px);
+}
+
+.check-icon {
+  color: var(--white);
+  margin-bottom: 1.5rem;
+  animation: scaleIn 0.5s ease-out;
+}
+
+.captured-title {
+  margin: 0;
+  color: var(--white);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  text-align: center;
+  animation: fadeIn 0.5s ease-out 0.2s both;
+}
+
+.captured-image {
+  width: 100%;
+  margin: 2rem 0;
+  border: 3px solid var(--green-second);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s ease-out 0.4s both;
+}
+
+.captured-image.analyzing {
+  border: 4px solid var(--white);
+  animation: borderPulse 1.5s ease-in-out infinite;
+}
+
+.button-stack {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+  min-height: 3.5rem;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button.primary {
+  color: var(--white);
+  background: var(--green-second);
+}
+
+.button.primary:hover {
+  background: var(--green-primary);
+}
+
+.button.secondary {
+  color: var(--white);
+  border: 2px solid var(--white);
+  background: transparent;
+}
+
+.button.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.spinner {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 4px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.spinner.large {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes borderPulse {
+  0%,
+  100% {
+    border-color: var(--white);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+}
+
+@media (max-width: 640px) {
+  .scanner-header {
+    padding: 1rem 0.75rem;
+  }
+
+  .scanner-footer {
+    padding: 1rem 0.75rem;
+  }
+
+  .message-screen,
+  .captured-screen {
+    padding: 1rem;
+  }
+}
